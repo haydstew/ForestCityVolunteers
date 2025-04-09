@@ -1,0 +1,97 @@
+$white: #ffffff;
+$gold: #f0c148;
+$navy: #10214d;
+$red: #d9534f;
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: $navy;
+  color: $white;
+  text-align: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-top: 12px;
+  color: $gold;
+}
+
+p {
+  font-size: 1.1rem;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 900px;
+}
+
+.overview,
+.reservations,
+.rooms {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
+}
+
+.reservation-card,
+.room-card {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px;
+  margin: 10px;
+  border-radius: 5px;
+  width: 95%;
+
+  p {
+    margin: 5px 0;
+  }
+
+  button {
+    background-color: $gold;
+    color: $navy;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s;
+
+    &:hover {
+      background-color: darken($gold, 10%);
+    }
+  }
+}
+
+.generate-report-btn {
+  background-color: $gold;
+  color: $navy;
+  margin-top: 20px;
+  font-size: 1rem;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: darken($gold, 10%);
+  }
+}

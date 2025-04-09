@@ -1,0 +1,11 @@
+$white: #ffffff;
+$gold: #f0c148;
+$navy: #10214d;
+
+.footer {
+  display: flex;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: $white;
+  background-color: $navy;
+}

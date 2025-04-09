@@ -1,0 +1,91 @@
+$white: #ffffff;
+$gold: #f0c148;
+$navy: #10214d;
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.patron-login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: $white;
+  text-align: center;
+
+  .lpl-logo {
+    width: 75px;
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    label {
+      text-align: left;
+      font-weight: bold;
+      margin-bottom: -10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      background-color: $gold;
+      color: $navy;
+
+      &:hover {
+        background-color: darken($gold, 15%);
+      }
+    }
+  }
+
+  p {
+    margin-top: 10px;
+    font-size: 1rem;
+
+    button {
+      background: none;
+      border: none;
+      color: $gold;
+      font-family: "Poppins", sans-serif;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        color: darken($gold, 15%);
+        text-decoration: underline;
+      }
+    }
+  }
+}

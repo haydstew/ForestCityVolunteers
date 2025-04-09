@@ -1,0 +1,56 @@
+$white: #ffffff;
+$gold: #f0c148;
+$navy: #10214d;
+$red: #d9534f;
+
+.header {
+  background-color: $gold;
+  padding: 20px;
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    width: 125px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+
+    .nav-link {
+      color: $navy;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: darken($navy, 5%);
+        text-decoration: underline;
+      }
+    }
+
+    .signout-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      color: $white;
+      background-color: $red;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background-color: darken($red, 5%);
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+$primary-font: "Poppins", sans-serif;
+$white: #ffffff;
+$gold: #f0c148;
+$navy: #10214d;
+
+body {
+  background-color: $navy;
+}
+
+body,
+button,
+input {
+  font-family: $primary-font;
+}
