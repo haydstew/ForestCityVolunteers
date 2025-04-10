@@ -1,9 +1,11 @@
-$white: #ffffff;
-$gold: #f0c148;
-$navy: #10214d;
+$green-100: #f1f1ef;
+$green-200: #a3ab82;
+$green-300: #5c6d49;
+$green-400: #0d3d03;
+$green-500: #2e2c1f;
 
 .header {
-  background-color: $gold;
+  background-color: $green-400;
   padding: 20px;
 
   .header-content {
@@ -14,8 +16,21 @@ $navy: #10214d;
     margin: 0 auto;
   }
 
-  .logo {
-    width: 125px;
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    h1 {
+      color: $green-100;
+      font-weight: bold;
+      font-size: 1.6rem;
+      margin: 0;
+    }
+
+    .logo {
+      width: 50px;
+    }
   }
 
   .nav-links {
@@ -24,14 +39,14 @@ $navy: #10214d;
     gap: 50px;
 
     .nav-link {
-      color: $navy;
+      color: $green-100;
       text-decoration: none;
       font-size: 1rem;
       font-weight: bold;
       transition: color 0.3s ease;
 
       &:hover {
-        color: darken($navy, 5%);
+        color: darken($green-100, 15%);
         text-decoration: underline;
       }
     }
@@ -40,15 +55,15 @@ $navy: #10214d;
       padding: 10px 20px;
       border: none;
       border-radius: 8px;
-      color: $white;
-      background-color: $navy;
+      color: $green-400;
+      background-color: $green-100;
       font-weight: bold;
       font-size: 1rem;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
 
       &:hover {
-        background-color: darken($navy, 5%);
+        background-color: darken($green-100, 15%);
       }
     }
   }

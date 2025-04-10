@@ -1,10 +1,12 @@
-$primary-font: "Poppins", sans-serif;
-$white: #ffffff;
-$gold: #f0c148;
-$navy: #10214d;
+$primary-font: "Lato", sans-serif;
+$green-100: #f1f1ef;
+$green-200: #a3ab82;
+$green-300: #5c6d49;
+$green-400: #0d3d03;
+$green-500: #2e2c1f;
 
 body {
-  background-color: $navy;
+  background-color: $green-100;
 }
 
 body,

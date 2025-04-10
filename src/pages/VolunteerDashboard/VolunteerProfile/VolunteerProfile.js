@@ -10,10 +10,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import emailjs from "emailjs-com";
-import "./PatronProfile.scss";
-import PatronHeader from "../../../components/PatronHeader/PatronHeader.js";
+import "./VolunteerProfile.scss";
+import VolunteerHeader from "../../../components/VolunteerHeader/VolunteerHeader.js";
 
-const PatronProfile = () => {
+const VolunteerProfile = () => {
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [pastBookings, setPastBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,10 +40,10 @@ const PatronProfile = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const email = localStorage.getItem("patron");
+        const email = localStorage.getItem("volunteer");
         if (!email) return;
 
-        // Get all rooms and bookings for the patron
+        // Get all rooms and bookings for the volunteer
         const roomsSnapshot = await getDocs(collection(db, "rooms"));
         const rooms = roomsSnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -184,8 +184,8 @@ const PatronProfile = () => {
 
   return (
     <>
-      <PatronHeader />
-      <div className="patron-profile-container">
+      <VolunteerHeader />
+      <div className="volunteer-profile-container">
         <h2>My Bookings</h2>
         {loading ? (
           <p>Loading your bookings...</p>
@@ -320,4 +320,4 @@ const PatronProfile = () => {
   );
 };
 
-export default PatronProfile;
+export default VolunteerProfile;

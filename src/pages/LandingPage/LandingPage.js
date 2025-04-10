@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.scss";
-import lplLogo from "../../assets/lpl-icon-yellow.svg";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
@@ -10,27 +9,35 @@ const LandingPage = () => {
   return (
     <div className="page-container">
       <Header />
-      <div className="landing-container">
-        <main className="content">
-          <img src={lplLogo} alt="LPL Logo" className="lpl-logo" />
-          <h1>Welcome to the London Public Library Room Booking System</h1>
-          <p>Select your role to proceed:</p>
-          <div className="button-group">
-            <button
-              className="btn patron-btn"
-              onClick={() => navigate("/patron-login")}
-            >
-              Library Patron Login
-            </button>
-            <button
-              className="btn librarian-btn"
-              onClick={() => navigate("/librarian-login")}
-            >
-              Librarian Login
-            </button>
-          </div>
-        </main>
-      </div>
+      <main className="landing-container">
+        <h2>Welcome to Forest City Volunteers</h2>
+
+        <p className="tagline">Where Community Takes Root.</p>
+
+        <p className="intro-text">
+          Discover meaningful volunteer opportunities or post opportunities for
+          others to join in London, Ontario. Together, we're building a stronger
+          Forest City.
+        </p>
+
+        <p>Select your role to get started:</p>
+
+        <div className="button-group">
+          <button
+            className="btn volunteer-btn"
+            onClick={() => navigate("/volunteer-login")}
+          >
+            I'm a Volunteer
+          </button>
+
+          <button
+            className="btn organization-btn"
+            onClick={() => navigate("/organization-login")}
+          >
+            I'm an Organization
+          </button>
+        </div>
+      </main>
       <Footer />
     </div>
   );

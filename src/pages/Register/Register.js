@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../Firebase.js";
 import { setDoc, doc } from "firebase/firestore";
-import "./PatronRegister.scss";
+import "./Register.scss";
 import lplLogo from "../../assets/lpl-icon-yellow.svg";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
-const PatronRegister = () => {
+const Register = () => {
   const [formData, setFormData] = useState({
     cardNumber: "",
     pin: "",
@@ -39,11 +39,11 @@ const PatronRegister = () => {
       // Store user role in Firestore
       await setDoc(doc(db, "users", user.uid), {
         email: formData.email,
-        role: "patron",
+        role: "",
       });
 
       alert("Registration successful! You can now log in.");
-      navigate("/patron-login");
+      navigate("/");
     } catch (error) {
       alert(error.message);
     }
@@ -52,9 +52,8 @@ const PatronRegister = () => {
   return (
     <>
       <Header />
-      <div className="patron-register-container">
-        <img src={lplLogo} alt="LPL Logo" className="lpl-logo" />
-        <h2>Library Patron Registration</h2>
+      <div className="register-container">
+        <h2>Register</h2>
         <form onSubmit={handleRegister}>
           <h3>Library Card Information</h3>
           <p>
@@ -172,14 +171,10 @@ const PatronRegister = () => {
 
           <button type="submit">Register</button>
         </form>
-        <p>
-          Already have an account?
-          <button onClick={() => navigate("/patron-login")}>Login here.</button>
-        </p>
       </div>
       <Footer />
     </>
   );
 };
 
-export default PatronRegister;
+export default Register;

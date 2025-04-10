@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Firebase.js";
-import "./PatronLogin.scss";
-import lplLogo from "../../assets/lpl-icon-yellow.svg";
+import "./VolunteerLogin.scss";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
-const PatronLogin = () => {
+const VolunteerLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -27,10 +26,10 @@ const PatronLogin = () => {
       console.log("Login successful!", userCredential.user);
 
       // Store session (if needed)
-      localStorage.setItem("patron", email);
+      localStorage.setItem("volunteer", email);
 
       // Redirect to user dashboard
-      navigate("/patron-dashboard");
+      navigate("/volunteer-dashboard");
     } catch (error) {
       console.error("Error signing in:", error.message);
       alert("Invalid credentials. Please try again.");
@@ -40,38 +39,51 @@ const PatronLogin = () => {
   return (
     <div className="page-container">
       <Header />
-      <div className="patron-login-container">
-        <img src={lplLogo} alt="LPL Logo" className="lpl-logo" />
-        <h2>Library Patron Login</h2>
-        <form onSubmit={handleLogin}>
-          <label>Email:</label>
+      <main className="volunteer-login-container">
+        <h2>Volunteer Login</h2>
+
+        <p className="intro-text">
+          Welcome back! Please log in to access your volunteer dashboard and
+          manage your opportunities.
+        </p>
+
+        <form className="login-form">
+          <label htmlFor="email">Email</label>
           <input
             type="email"
-            placeholder="example@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            className="form-input"
             required
           />
-          <label>Password:</label>
+
+          <label htmlFor="password">Password</label>
           <input
             type="password"
+            id="password"
+            name="password"
             placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            className="form-input"
             required
           />
-          <button type="submit">Login</button>
-        </form>
-        <p>
-          Don't have an account?
-          <button onClick={() => navigate("/patron-register")}>
-            Register here.
+
+          <button type="submit" className="btn login-btn" onClick={handleLogin}>
+            Login
           </button>
-        </p>
-      </div>
+        </form>
+
+        <p>Don't have an account?</p>
+        <button
+          className="btn register-btn"
+          onClick={() => navigate("/register")}
+        >
+          Register Here
+        </button>
+      </main>
       <Footer />
     </div>
   );
 };
 
-export default PatronLogin;
+export default VolunteerLogin;

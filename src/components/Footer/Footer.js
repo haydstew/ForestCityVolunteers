@@ -3,9 +3,10 @@ import "./Footer.scss";
 const Footer = () => {
   return (
     <footer className="footer">
-      <p>
-        © {new Date().getFullYear()} London Public Library. All Rights Reserved.
-      </p>
+      <span>
+        © {new Date().getFullYear()} Forest City Volunteers. All Rights
+        Reserved.
+      </span>
     </footer>
   );
 };

@@ -1,0 +1,80 @@
+$green-100: #f1f1ef;
+$green-200: #a3ab82;
+$green-300: #5c6d49;
+$green-400: #0d3d03;
+$green-500: #2e2c1f;
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.organization-login-container {
+  text-align: center;
+  margin: auto;
+
+  h2 {
+    font-size: 2.5rem;
+    color: $green-400;
+    margin-bottom: 1rem;
+  }
+
+  .intro-text {
+    max-width: 500px;
+    margin: 0 auto 1rem auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: $green-500;
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto 2rem auto;
+
+    label {
+      text-align: left;
+      font-weight: bold;
+      color: $green-400;
+      margin-bottom: -5px;
+    }
+
+    .form-input {
+      padding: 12px;
+      border: 1px solid $green-200;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  }
+
+  .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .login-btn {
+    background-color: $green-400;
+    color: $green-100;
+
+    &:hover {
+      background-color: darken($green-400, 10%);
+    }
+  }
+
+  .register-btn {
+    background-color: $green-200;
+    color: $green-400;
+
+    &:hover {
+      background-color: darken($green-200, 10%);
+    }
+  }
+}

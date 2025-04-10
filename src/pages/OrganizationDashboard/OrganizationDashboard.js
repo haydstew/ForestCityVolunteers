@@ -13,19 +13,19 @@ import {
 import emailjs from "emailjs-com";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import "./LibrarianDashboard.scss";
-import LibrarianHeader from "../../components/LibrarianHeader/LibrarianHeader.js";
+import "./OrganizationDashboard.scss";
+import OrganizationHeader from "../../components/OrganizationHeader/OrganizationHeader.js";
 import Footer from "../../components/Footer/Footer.js";
 
-const LibrarianDashboard = () => {
+const OrganizationDashboard = () => {
   const navigate = useNavigate();
   const [reservations, setReservations] = useState([]);
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    if (!localStorage.getItem("librarian")) {
-      console.warn("No librarian session found. Redirecting to login...");
-      navigate("/librarian-login");
+    if (!localStorage.getItem("organization")) {
+      console.warn("No organization session found. Redirecting to login...");
+      navigate("/organization-login");
       return;
     }
 
@@ -218,7 +218,7 @@ const LibrarianDashboard = () => {
     // Title
     doc.setFont("helvetica", "bold");
     doc.setFontSize(18);
-    doc.text("Librarian Dashboard Report", 14, 15);
+    doc.text("Organization Dashboard Report", 14, 15);
 
     // Reservations Table
     doc.setFontSize(14);
@@ -237,14 +237,14 @@ const LibrarianDashboard = () => {
     });
 
     // Save PDF
-    doc.save("Librarian_Dashboard_Report.pdf");
+    doc.save("Organization_Dashboard_Report.pdf");
   };
 
   return (
     <>
-      <LibrarianHeader />
+      <OrganizationHeader />
       <div className="dashboard-container">
-        <h2>Librarian Dashboard</h2>
+        <h2>Organization Dashboard</h2>
         <div className="dashboard-content">
           {/* Overview Panel */}
           <div className="overview">
@@ -302,4 +302,4 @@ const LibrarianDashboard = () => {
   );
 };
 
-export default LibrarianDashboard;
+export default OrganizationDashboard;

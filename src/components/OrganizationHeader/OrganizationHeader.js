@@ -1,8 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
-import "./PatronHeader.scss";
+import { useNavigate } from "react-router-dom";
+import "./OrganizationHeader.scss";
 import libraryLogo from "../../assets/lpl-logo-blue.svg";
 
-const PatronHeader = () => {
+const OrganizationHeader = () => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -11,7 +11,7 @@ const PatronHeader = () => {
     );
 
     if (signOutConfirmation) {
-      localStorage.removeItem("patron");
+      localStorage.removeItem("organization");
       navigate("/");
     }
   };
@@ -26,20 +26,12 @@ const PatronHeader = () => {
             className="logo"
           />
         </a>
-        <nav className="nav-links">
-          <Link to="/patron-dashboard" className="nav-link">
-            Dashboard
-          </Link>
-          <Link to="/patron-profile" className="nav-link">
-            Profile
-          </Link>
-          <button className="signout-btn" onClick={handleSignOut}>
-            Sign Out
-          </button>
-        </nav>
+        <button className="signout-btn" onClick={handleSignOut}>
+          Sign Out
+        </button>
       </div>
     </header>
   );
 };
 
-export default PatronHeader;
+export default OrganizationHeader;

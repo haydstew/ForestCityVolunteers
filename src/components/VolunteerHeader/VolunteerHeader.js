@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import "./LibrarianHeader.scss";
+import { Link, useNavigate } from "react-router-dom";
+import "./VolunteerHeader.scss";
 import libraryLogo from "../../assets/lpl-logo-blue.svg";
 
-const LibrarianHeader = () => {
+const VolunteerHeader = () => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -11,7 +11,7 @@ const LibrarianHeader = () => {
     );
 
     if (signOutConfirmation) {
-      localStorage.removeItem("librarian");
+      localStorage.removeItem("volunteer");
       navigate("/");
     }
   };
@@ -26,12 +26,20 @@ const LibrarianHeader = () => {
             className="logo"
           />
         </a>
-        <button className="signout-btn" onClick={handleSignOut}>
-          Sign Out
-        </button>
+        <nav className="nav-links">
+          <Link to="/volunteer-dashboard" className="nav-link">
+            Dashboard
+          </Link>
+          <Link to="/volunteer-profile" className="nav-link">
+            Profile
+          </Link>
+          <button className="signout-btn" onClick={handleSignOut}>
+            Sign Out
+          </button>
+        </nav>
       </div>
     </header>
   );
 };
 
-export default LibrarianHeader;
+export default VolunteerHeader;

@@ -4,10 +4,10 @@ import { db, auth } from "../../Firebase.js";
 import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import emailjs from "emailjs-com";
-import "./PatronDashboard.scss";
-import PatronHeader from "../../components/PatronHeader/PatronHeader.js";
+import "./VolunteerDashboard.scss";
+import VolunteerHeader from "../../components/VolunteerHeader/VolunteerHeader.js";
 
-const PatronDashboard = () => {
+const VolunteerDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [rooms, setRooms] = useState([]);
@@ -30,8 +30,8 @@ const PatronDashboard = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
-        alert("No patron session found. Redirecting to login...");
-        navigate("/patron-login");
+        alert("No volunteer session found. Redirecting to login...");
+        navigate("/volunteer-login");
       } else {
         setUser(currentUser);
       }
@@ -239,8 +239,8 @@ const PatronDashboard = () => {
 
   return (
     <>
-      <PatronHeader />
-      <div className="patron-dashboard-container">
+      <VolunteerHeader />
+      <div className="volunteer-dashboard-container">
         <div className="filter-sidebar">
           <h3>Filters</h3>
 
@@ -287,7 +287,7 @@ const PatronDashboard = () => {
         </div>
 
         <div className="main-content">
-          <h2>Patron Dashboard</h2>
+          <h2>Volunteer Dashboard</h2>
           <div className="room-grid">
             {filteredRooms.length > 0 ? (
               filteredRooms.map((room) => (
@@ -418,4 +418,4 @@ const PatronDashboard = () => {
   );
 };
 
-export default PatronDashboard;
+export default VolunteerDashboard;
