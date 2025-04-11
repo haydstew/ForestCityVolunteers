@@ -1,104 +1,105 @@
-$white: #ffffff;
-$gold: #f0c148;
-$navy: #10214d;
+$green-100: #f1f1ef;
+$green-200: #a3ab82;
+$green-300: #5c6d49;
+$green-400: #0d3d03;
+$green-500: #2e2c1f;
 
-.volunteer-register-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 50px 60px;
-  color: $white;
-
-  .lpl-logo {
-    width: 75px;
-    margin-bottom: 15px;
-  }
+.register-container {
+  text-align: center;
+  margin: auto;
 
   h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
+    font-size: 2.5rem;
+    color: $green-400;
+    margin-bottom: 1rem;
   }
 
-  form {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 50px;
-    border-radius: 10px;
+  .intro-text {
+    margin: 0 auto 1rem auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: $green-500;
+  }
+
+  .register-form {
     display: flex;
     flex-direction: column;
-    width: 1200px;
     gap: 15px;
+    max-width: 400px;
+    margin: 0 auto 2rem auto;
 
-    h3 {
-      font-size: 1.6rem;
-      margin: 15px 0 0px;
-      border-bottom: 2px solid $gold;
-      padding-bottom: 5px;
-    }
-
-    p {
-      font-size: 1.1rem;
-      margin: 0 0 10px;
-    }
-
-    .form-row {
+    .radio-group {
       display: flex;
-      justify-content: space-between;
-      gap: 50px;
-      margin-bottom: 10px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      width: 50%;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
     }
 
     label {
+      text-align: left;
       font-weight: bold;
-      margin-bottom: 5px;
+      color: $green-400;
+      margin-bottom: -5px;
     }
 
-    input {
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-
-    button {
+    .form-input {
       padding: 12px;
+      border: 1px solid $green-200;
+      border-radius: 8px;
       font-size: 1rem;
-      font-weight: bold;
+    }
+
+    .btn {
+      padding: 12px 24px;
       border: none;
       border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
-      background-color: $gold;
-      color: $navy;
+    }
+
+    .register-btn {
+      background-color: $green-400;
+      color: $green-100;
 
       &:hover {
-        background-color: darken($gold, 15%);
+        background-color: darken($green-400, 10%);
       }
     }
   }
 
-  p {
-    margin-top: 10px;
-    font-size: 1rem;
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 
-    button {
-      background: none;
+    .btn {
+      padding: 12px 24px;
       border: none;
-      color: $gold;
-      font-family: "Poppins", sans-serif;
+      border-radius: 8px;
       font-weight: bold;
       font-size: 1rem;
       cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .volunteer-btn {
+      background-color: $green-400;
+      color: $green-100;
 
       &:hover {
-        color: darken($gold, 15%);
-        text-decoration: underline;
+        background-color: darken($green-400, 10%);
+      }
+    }
+
+    .organization-btn {
+      background-color: $green-200;
+      color: $green-400;
+
+      &:hover {
+        background-color: darken($green-200, 10%);
       }
     }
   }

@@ -1,179 +1,155 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../Firebase.js";
-import { setDoc, doc } from "firebase/firestore";
+import { auth } from "../../Firebase.js";
 import "./Register.scss";
-import lplLogo from "../../assets/lpl-icon-yellow.svg";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    cardNumber: "",
-    pin: "",
-    firstName: "",
-    lastName: "",
-    dob: "",
-    postalCode: "",
-    email: "",
-    password: "",
-  });
-  const navigate = useNavigate();
+  const [userType, setUserType] = useState("volunteer"); // volunteer selected by default
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState(""); // For volunteer
+  const [organizationName, setOrganizationName] = useState(""); // For organization
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      const user = userCredential.user;
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log("Registration successful!");
 
-      // Store user role in Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        email: formData.email,
-        role: "",
-      });
-
-      alert("Registration successful! You can now log in.");
-      navigate("/");
+      if (userType === "volunteer") {
+        localStorage.setItem("volunteer", email);
+        navigate("/volunteer-dashboard");
+      } else {
+        localStorage.setItem("organization", email);
+        navigate("/organization-dashboard");
+      }
     } catch (error) {
-      alert(error.message);
+      console.error("Error registering:", error.message);
+      alert("Registration failed. Please try again.");
     }
   };
 
   return (
-    <>
+    <div className="page-container">
       <Header />
-      <div className="register-container">
-        <h2>Register</h2>
-        <form onSubmit={handleRegister}>
-          <h3>Library Card Information</h3>
-          <p>
-            Please enter your library card number and PIN to verify your
-            membership.
-          </p>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Library Card Number:</label>
+      <main className="register-container">
+        <h2>Create an Account</h2>
+
+        <p className="intro-text">
+          Sign up to get started. Choose your role and complete the form below.
+        </p>
+
+        <form className="register-form" onSubmit={handleRegister}>
+          <div className="radio-group">
+            <label>
               <input
-                type="text"
-                name="cardNumber"
-                placeholder="Enter your 14-digit library card number"
-                value={formData.cardNumber}
-                onChange={handleChange}
-                required
+                type="radio"
+                name="userType"
+                value="volunteer"
+                checked={userType === "volunteer"}
+                onChange={() => setUserType("volunteer")}
               />
-            </div>
-            <div className="form-group">
-              <label>PIN:</label>
+              Volunteer
+            </label>
+
+            <label>
               <input
-                type="password"
-                name="pin"
-                placeholder="Enter your 4-digit library card PIN"
-                value={formData.pin}
-                onChange={handleChange}
-                required
+                type="radio"
+                name="userType"
+                value="organization"
+                checked={userType === "organization"}
+                onChange={() => setUserType("organization")}
               />
-            </div>
+              Organization
+            </label>
           </div>
 
-          <h3>Personal Information</h3>
-          <p>
-            We need your personal details to match our records and complete your
-            registration.
-          </p>
-          <div className="form-row">
-            <div className="form-group">
-              <label>First Name:</label>
+          {userType === "volunteer" && (
+            <>
+              <label htmlFor="name">Full Name</label>
               <input
                 type="text"
-                name="firstName"
-                placeholder="Enter your first name"
-                value={formData.firstName}
-                onChange={handleChange}
+                id="name"
+                name="name"
+                placeholder="Enter your full name"
+                className="form-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
-            </div>
-            <div className="form-group">
-              <label>Last Name:</label>
+            </>
+          )}
+
+          {userType === "organization" && (
+            <>
+              <label htmlFor="organizationName">Organization Name</label>
               <input
                 type="text"
-                name="lastName"
-                placeholder="Enter your last name"
-                value={formData.lastName}
-                onChange={handleChange}
+                id="organizationName"
+                name="organizationName"
+                placeholder="Enter organization name"
+                className="form-input"
+                value={organizationName}
+                onChange={(e) => setOrganizationName(e.target.value)}
                 required
               />
-            </div>
-          </div>
+            </>
+          )}
 
-          <div className="form-row">
-            <div className="form-group">
-              <label>Date of Birth:</label>
-              <input
-                type="date"
-                name="dob"
-                value={formData.dob}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Postal Code:</label>
-              <input
-                type="text"
-                name="postalCode"
-                placeholder="Enter your postal code"
-                value={formData.postalCode}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            className="form-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          <h3>User Account Information</h3>
-          <p>
-            Create an account by entering your email and setting a secure
-            password.
-          </p>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Password:</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter at least 8 characters"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            className="form-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-          <button type="submit">Register</button>
+          <button type="submit" className="btn register-btn">
+            Register
+          </button>
         </form>
-      </div>
+
+        <p>Already have an account?</p>
+        <div className="button-group">
+          <button
+            className="btn volunteer-btn"
+            onClick={() => navigate("/volunteer-login")}
+          >
+            Volunteer Login
+          </button>
+
+          <button
+            className="btn organization-btn"
+            onClick={() => navigate("/organization-login")}
+          >
+            Organization Login
+          </button>
+        </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 
