@@ -86,11 +86,11 @@ $green-500: #2e2c1f;
     }
 
     .volunteer-btn {
-      background-color: $green-400;
+      background-color: $green-300;
       color: $green-100;
 
       &:hover {
-        background-color: darken($green-400, 10%);
+        background-color: darken($green-300, 10%);
       }
     }
 

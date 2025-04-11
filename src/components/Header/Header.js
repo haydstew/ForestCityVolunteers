@@ -13,13 +13,9 @@ const Header = () => {
           <img src={logo} alt="Forest City Volunteers logo" className="logo" />
           <h1>Forest City Volunteers</h1>
         </div>
-
         <nav className="nav-links">
           <Link to="/" className="nav-link">
             Home
-          </Link>
-          <Link to="/faq" className="nav-link">
-            FAQ
           </Link>
           <button
             className="register-btn"
