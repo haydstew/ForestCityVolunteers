@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA95v5xloOVfmuCktM8Q8PLm7LnK3K-6uM",
-  authDomain: "library-room-booking-sys-eeb5a.firebaseapp.com",
-  projectId: "library-room-booking-sys-eeb5a",
-  storageBucket: "library-room-booking-sys-eeb5a.firebasestorage.app",
-  messagingSenderId: "322880798352",
-  appId: "1:322880798352:web:ab77294eaca8531cb92215",
+  apiKey: "AIzaSyBBwuv2rQKDHIX_aqh378NQcnZhxGvuDWw",
+  authDomain: "forest-city-volunteers.firebaseapp.com",
+  projectId: "forest-city-volunteers",
+  storageBucket: "forest-city-volunteers.firebasestorage.app",
+  messagingSenderId: "414932803948",
+  appId: "1:414932803948:web:17ab4efc9bd094e9a85349",
 };
 
 const app = initializeApp(firebaseConfig);
