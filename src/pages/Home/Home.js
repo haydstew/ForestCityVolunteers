@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import "./LandingPage.scss";
+import "./Home.scss";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
-const LandingPage = () => {
+const Home = () => {
   const navigate = useNavigate();
 
   return (
     <div className="page-container">
       <Header />
-      <main className="landing-container">
+      <main className="home-container">
         <h2>Welcome to Forest City Volunteers</h2>
 
         <p className="tagline">Where Community Takes Root.</p>
@@ -43,4 +43,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default Home;

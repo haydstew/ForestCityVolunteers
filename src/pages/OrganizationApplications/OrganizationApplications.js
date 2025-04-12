@@ -13,11 +13,11 @@ import {
 import emailjs from "emailjs-com";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import "./OrganizationDashboard.scss";
+import "./OrganizationApplications.scss";
 import OrganizationHeader from "../../components/OrganizationHeader/OrganizationHeader.js";
 import Footer from "../../components/Footer/Footer.js";
 
-const OrganizationDashboard = () => {
+const OrganizationApplications = () => {
   const navigate = useNavigate();
   const [reservations, setReservations] = useState([]);
   const [rooms, setRooms] = useState([]);
@@ -218,7 +218,7 @@ const OrganizationDashboard = () => {
     // Title
     doc.setFont("helvetica", "bold");
     doc.setFontSize(18);
-    doc.text("Organization Dashboard Report", 14, 15);
+    doc.text("Organization Applications Report", 14, 15);
 
     // Reservations Table
     doc.setFontSize(14);
@@ -237,15 +237,15 @@ const OrganizationDashboard = () => {
     });
 
     // Save PDF
-    doc.save("Organization_Dashboard_Report.pdf");
+    doc.save("Organization_Applications_Report.pdf");
   };
 
   return (
     <>
       <OrganizationHeader />
-      <div className="dashboard-container">
-        <h2>Organization Dashboard</h2>
-        <div className="dashboard-content">
+      <div className="applications-container">
+        <h2>Organization Applications</h2>
+        <div className="applications-content">
           {/* Overview Panel */}
           <div className="overview">
             <h3>Overview</h3>
@@ -302,4 +302,4 @@ const OrganizationDashboard = () => {
   );
 };
 
-export default OrganizationDashboard;
+export default OrganizationApplications;

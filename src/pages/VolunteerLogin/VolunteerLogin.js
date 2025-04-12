@@ -28,7 +28,7 @@ const VolunteerLogin = () => {
 
       if (volunteerSnap.exists()) {
         localStorage.setItem("volunteer", email);
-        navigate("/volunteer-dashboard");
+        navigate("/volunteer-applications");
       } else {
         alert("Access denied: This account is not registered as a volunteer.");
       }
@@ -45,8 +45,8 @@ const VolunteerLogin = () => {
         <h2>Volunteer Login</h2>
 
         <p className="intro-text">
-          Welcome back! Please log in to access your volunteer dashboard and
-          manage your opportunities.
+          Welcome back! Please log in to view your volunteer applications and
+          apply for opportunities.
         </p>
 
         <form className="login-form">

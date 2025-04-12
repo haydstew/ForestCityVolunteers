@@ -28,7 +28,7 @@ const OrganizationLogin = () => {
 
       if (organizationSnap.exists()) {
         localStorage.setItem("organization", email);
-        navigate("/organization-dashboard");
+        navigate("/organization-applications");
       } else {
         alert(
           "Access denied: This account is not registered as an organization."
@@ -47,8 +47,8 @@ const OrganizationLogin = () => {
         <h2>Organization Login</h2>
 
         <p className="intro-text">
-          Welcome back! Please log in to access your organization dashboard and
-          manage your volunteer opportunities.
+          Welcome back! Please log in to review volunteer applications and
+          manage your opportunities.
         </p>
 
         <form className="login-form">

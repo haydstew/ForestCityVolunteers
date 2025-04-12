@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../../Firebase.js";
+import { db } from "../../Firebase.js";
 import {
   collection,
   query,
@@ -10,10 +10,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import emailjs from "emailjs-com";
-import "./VolunteerProfile.scss";
-import VolunteerHeader from "../../../components/VolunteerHeader/VolunteerHeader.js";
+import "./VolunteerOpportunities.scss";
+import VolunteerHeader from "../../components/VolunteerHeader/VolunteerHeader.js";
 
-const VolunteerProfile = () => {
+const VolunteerOpportunities = () => {
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [pastBookings, setPastBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -185,7 +185,7 @@ const VolunteerProfile = () => {
   return (
     <>
       <VolunteerHeader />
-      <div className="volunteer-profile-container">
+      <div className="opportunities-container">
         <h2>My Bookings</h2>
         {loading ? (
           <p>Loading your bookings...</p>
@@ -320,4 +320,4 @@ const VolunteerProfile = () => {
   );
 };
 
-export default VolunteerProfile;
+export default VolunteerOpportunities;

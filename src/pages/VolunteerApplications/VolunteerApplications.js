@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { db, auth } from "../../Firebase.js";
+import { db } from "../../Firebase.js";
 import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
 import emailjs from "emailjs-com";
-import "./VolunteerDashboard.scss";
+import "./VolunteerApplications.scss";
 import VolunteerHeader from "../../components/VolunteerHeader/VolunteerHeader.js";
 
-const VolunteerDashboard = () => {
+const VolunteerApplications = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [rooms, setRooms] = useState([]);
@@ -28,16 +27,12 @@ const VolunteerDashboard = () => {
   const [issueText, setIssueText] = useState("");
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) {
-        alert("No volunteer session found. Redirecting to login...");
-        navigate("/volunteer-login");
-      } else {
-        setUser(currentUser);
-      }
-    });
-
-    return () => unsubscribe();
+    if (!localStorage.getItem("volunteer")) {
+      console.log(
+        "No volunteer session found. Redirecting to volunteer login page."
+      );
+      navigate("/volunteer-login");
+    }
   }, [navigate]);
 
   useEffect(() => {
@@ -240,7 +235,7 @@ const VolunteerDashboard = () => {
   return (
     <>
       <VolunteerHeader />
-      <div className="volunteer-dashboard-container">
+      <div className="applications-container">
         <div className="filter-sidebar">
           <h3>Filters</h3>
 
@@ -287,7 +282,7 @@ const VolunteerDashboard = () => {
         </div>
 
         <div className="main-content">
-          <h2>Volunteer Dashboard</h2>
+          <h2>Volunteer Applications</h2>
           <div className="room-grid">
             {filteredRooms.length > 0 ? (
               filteredRooms.map((room) => (
@@ -418,4 +413,4 @@ const VolunteerDashboard = () => {
   );
 };
 
-export default VolunteerDashboard;
+export default VolunteerApplications;

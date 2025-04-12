@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./OrganizationHeader.scss";
-import libraryLogo from "../../assets/lpl-logo-blue.svg";
+import logo from "../../assets/fcv-icon-white.png";
 
 const OrganizationHeader = () => {
   const navigate = useNavigate();
@@ -19,16 +19,21 @@ const OrganizationHeader = () => {
   return (
     <header className="header">
       <div className="header-content">
-        <a href="https://www.lpl.ca/" target="_blank" rel="noreferrer">
-          <img
-            src={libraryLogo}
-            alt="London Public Library Logo"
-            className="logo"
-          />
-        </a>
-        <button className="signout-btn" onClick={handleSignOut}>
-          Sign Out
-        </button>
+        <div className="header-logo">
+          <img src={logo} alt="Forest City Volunteers logo" className="logo" />
+          <h1>Forest City Volunteers</h1>
+        </div>
+        <nav className="nav-links">
+          <Link to="/organization-applications" className="nav-link">
+            Review Applications
+          </Link>
+          <Link to="/organization-opportunities" className="nav-link">
+            Manage Opportunities
+          </Link>
+          <button className="signout-btn" onClick={handleSignOut}>
+            Sign Out
+          </button>
+        </nav>
       </div>
     </header>
   );
