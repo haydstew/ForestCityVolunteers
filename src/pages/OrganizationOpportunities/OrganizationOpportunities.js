@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { db } from "../../Firebase.js";
 import {
   collection,
@@ -14,6 +15,7 @@ import "./OrganizationOpportunities.scss";
 import OrganizationHeader from "../../components/OrganizationHeader/OrganizationHeader.js";
 
 const OrganizationOpportunities = () => {
+  const navigate = useNavigate();
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [pastBookings, setPastBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +38,15 @@ const OrganizationOpportunities = () => {
     "15:00 - 16:00",
     "16:00 - 17:00",
   ];
+
+  useEffect(() => {
+    if (!localStorage.getItem("organization")) {
+      console.log(
+        "No organization session found. Redirecting to organization login page."
+      );
+      navigate("/organization-login");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const fetchBookings = async () => {

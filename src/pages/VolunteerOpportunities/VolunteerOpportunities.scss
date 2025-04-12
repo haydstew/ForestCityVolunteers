@@ -1,77 +1,60 @@
-$white: #ffffff;
-$gold: #f0c148;
-$navy: #10214d;
-$red: #d9534f;
+$green-100: #f1f1ef;
+$green-200: #a3ab82;
+$green-300: #5c6d49;
+$green-400: #0d3d03;
+$green-500: #2e2c1f;
 
-/* Main Container */
-.opportunities-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: $navy;
-  color: $white;
-  min-height: 100vh;
-  padding: 20px;
-}
+.volunteer-opportunities-container {
+  text-align: center;
+  padding: 2rem;
 
-h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-/* Bookings Section */
-.bookings-section {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 8px;
-  width: 80%;
-  max-width: 1200px;
-  margin-bottom: 20px;
-
-  h3 {
-    font-size: 1.5rem;
-    color: $gold;
-    margin-bottom: 10px;
+  h2 {
+    font-size: 2.5rem;
+    color: $green-400;
+    margin-bottom: 1rem;
   }
 
-  p {
-    color: $white;
-    font-size: 1rem;
+  .opportunity-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem auto;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .booking-item {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 15px;
+  .opportunity-card {
+    background-color: $green-100;
+    border: 1px solid $green-200;
     border-radius: 8px;
-    margin-bottom: 10px;
-    transition: transform 0.2s;
-
-    &:hover {
-      transform: scale(1.03);
-    }
+    padding: 1.5rem;
+    text-align: left;
+    color: $green-500;
 
     h3 {
-      font-size: 1.3rem;
-      color: $gold;
+      color: $green-300;
+      margin-bottom: 0.5rem;
     }
 
     p {
-      margin: 5px 0;
+      margin: 0.3rem 0;
     }
 
-    .cancel-btn {
-      background-color: $gold;
-      color: $navy;
+    .apply-btn {
+      margin-top: 1rem;
+      padding: 12px 24px;
       border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 10px;
+      border-radius: 8px;
       font-weight: bold;
-      transition: background 0.3s;
+      font-size: 1rem;
+      background-color: $green-400;
+      color: $green-100;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
 
       &:hover {
-        background-color: darken($gold, 10%);
+        background-color: darken($green-400, 10%);
       }
     }
   }
