@@ -15,7 +15,6 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import "./OrganizationApplications.scss";
 import OrganizationHeader from "../../components/OrganizationHeader/OrganizationHeader.js";
-import Footer from "../../components/Footer/Footer.js";
 
 const OrganizationApplications = () => {
   const navigate = useNavigate();
@@ -297,7 +296,6 @@ const OrganizationApplications = () => {
           </button>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

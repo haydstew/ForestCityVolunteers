@@ -5,7 +5,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import "./Register.scss";
 import Header from "../../components/Header/Header.js";
-import Footer from "../../components/Footer/Footer.js";
 
 const Register = () => {
   const [userType, setUserType] = useState("volunteer");
@@ -169,7 +168,6 @@ const Register = () => {
           </button>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

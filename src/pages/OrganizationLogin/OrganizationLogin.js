@@ -5,7 +5,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import "./OrganizationLogin.scss";
 import Header from "../../components/Header/Header.js";
-import Footer from "../../components/Footer/Footer.js";
 
 const OrganizationLogin = () => {
   const [email, setEmail] = useState("");
@@ -89,7 +88,6 @@ const OrganizationLogin = () => {
           Register Here
         </button>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -5,7 +5,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import "./VolunteerLogin.scss";
 import Header from "../../components/Header/Header.js";
-import Footer from "../../components/Footer/Footer.js";
 
 const VolunteerLogin = () => {
   const [email, setEmail] = useState("");
@@ -87,7 +86,6 @@ const VolunteerLogin = () => {
           Register Here
         </button>
       </main>
-      <Footer />
     </div>
   );
 };

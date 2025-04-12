@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./Home.scss";
 import Header from "../../components/Header/Header.js";
-import Footer from "../../components/Footer/Footer.js";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -38,7 +37,6 @@ const Home = () => {
           </button>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };
