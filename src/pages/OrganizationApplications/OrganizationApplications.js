@@ -1,300 +1,158 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../Firebase.js";
 import {
-  doc,
-  updateDoc,
   collection,
   getDocs,
-  deleteDoc,
   query,
   where,
+  doc,
+  deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
-import emailjs from "emailjs-com";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import { db } from "../../Firebase.js";
 import "./OrganizationApplications.scss";
 import OrganizationHeader from "../../components/OrganizationHeader/OrganizationHeader.js";
 
 const OrganizationApplications = () => {
   const navigate = useNavigate();
-  const [reservations, setReservations] = useState([]);
-  const [rooms, setRooms] = useState([]);
+  const [opportunities, setOpportunities] = useState([]);
+  const [applications, setApplications] = useState({});
+  const organizationEmail = localStorage.getItem("organization");
 
   useEffect(() => {
-    if (!localStorage.getItem("organization")) {
+    if (!organizationEmail) {
       console.warn("No organization session found. Redirecting to login...");
       navigate("/organization-login");
-      return;
+    } else {
+      fetchOpportunities();
     }
+  }, [navigate, organizationEmail]);
 
-    const fetchRoomsAndBookings = async () => {
-      try {
-        const roomsSnapshot = await getDocs(collection(db, "rooms"));
-        const roomsList = roomsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+  const fetchOpportunities = async () => {
+    try {
+      const q = query(
+        collection(db, "opportunities"),
+        where("organizationEmail", "==", organizationEmail)
+      );
+      const querySnapshot = await getDocs(q);
+      const ops = [];
+      const appsByOpp = {};
+
+      for (let docSnap of querySnapshot.docs) {
+        const opportunity = { id: docSnap.id, ...docSnap.data() };
+        ops.push(opportunity);
+
+        const appsQ = query(
+          collection(db, "applications"),
+          where("opportunityId", "==", docSnap.id)
+        );
+        const appsSnap = await getDocs(appsQ);
+        appsByOpp[docSnap.id] = appsSnap.docs.map((app) => ({
+          id: app.id,
+          ...app.data(),
         }));
-        setRooms(roomsList);
-
-        // Fetch all bookings in parallel
-        const bookingsPromises = roomsList.map(async (room) => {
-          const bookingsRef = collection(db, "rooms", room.id, "bookings");
-          const bookingsSnapshot = await getDocs(bookingsRef);
-
-          return bookingsSnapshot.docs.map((bookingDoc) => ({
-            id: bookingDoc.id,
-            roomId: room.id, // Ensure roomId is set here
-            ...bookingDoc.data(),
-            room: room.name, // Assuming the room has a name field
-          }));
-        });
-
-        // Wait for all the bookings to be fetched in parallel
-        const allBookings = await Promise.all(bookingsPromises);
-
-        // Flatten the array of arrays into one array
-        const flattenedBookings = allBookings.flat();
-        setReservations(flattenedBookings);
-      } catch (error) {
-        console.error("Error fetching rooms or bookings:", error);
       }
-    };
 
-    fetchRoomsAndBookings();
-  }, [navigate]);
-
-  const handleApprove = async (reservation) => {
-    if (!reservation.roomId) {
-      console.error("Error: Room ID is missing for this reservation");
-      alert("Invalid reservation. Room ID is missing.");
-      return;
-    }
-
-    try {
-      const updatedReservation = { ...reservation, status: "Approved" };
-
-      // Optimistically update the status in the local state
-      setReservations((prevReservations) =>
-        prevReservations.map((res) =>
-          res.id === reservation.id ? updatedReservation : res
-        )
-      );
-
-      // Correct path to update the booking status in Firestore
-      const bookingRef = doc(
-        db,
-        "rooms",
-        reservation.roomId,
-        "bookings",
-        reservation.id
-      );
-      await updateDoc(bookingRef, {
-        status: "Approved",
-      });
-
-      // Send approval email to patron
-      const emailParams = {
-        user_email: reservation.email,
-        room_name: reservation.room,
-        room_location: reservation.location,
-        booking_date: reservation.date,
-        booking_time: reservation.time,
-        status: "Approved",
-      };
-
-      await emailjs.send(
-        "service_p7qb2fi",
-        "template_whfon5g",
-        emailParams,
-        "q6N2whZUsNxvfV7sr"
-      );
-
-      alert(`Reservation approved.`);
+      setOpportunities(ops);
+      setApplications(appsByOpp);
     } catch (error) {
-      console.error("Error approving reservation:", error);
-      alert("Failed to approve the reservation. Please try again later.");
+      console.error("Error fetching opportunities or applications:", error);
     }
   };
 
-  const handleDeny = async (reservation) => {
-    const reason = prompt("Please enter a reason for denial:");
-
-    if (!reason) {
-      alert("Denial reason is required.");
-      return;
-    }
+  const handleRemoveOpportunity = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to remove this opportunity?"
+    );
+    if (!confirmed) return;
 
     try {
-      const updatedReservation = { ...reservation, status: "Denied", reason };
-
-      // Optimistically update the status in the local state
-      setReservations((prevReservations) =>
-        prevReservations.map((res) =>
-          res.id === reservation.id ? updatedReservation : res
-        )
-      );
-
-      // Correct path to update the booking status in Firestore
-      const bookingRef = doc(
-        db,
-        "rooms",
-        reservation.roomId,
-        "bookings",
-        reservation.id
-      );
-
-      // Update the status to "Denied" rather than deleting the booking
-      await updateDoc(bookingRef, {
-        status: "Denied",
-        reason: reason,
-      });
-
-      // Send email to patron about denial
-      const emailParams = {
-        user_email: reservation.email,
-        room_name: reservation.room,
-        room_location: reservation.location,
-        booking_date: reservation.date,
-        booking_time: reservation.time,
-        status: "Denied",
-        reason: reason,
-      };
-
-      await emailjs.send(
-        "service_p7qb2fi",
-        "template_whfon5g",
-        emailParams,
-        "q6N2whZUsNxvfV7sr"
-      );
-
-      // Fetch reminders for this room (matching roomId, date, and time)
-      const remindersQuery = query(
-        collection(db, "reminders"),
-        where("roomId", "==", reservation.roomId),
-        where("date", "==", reservation.date),
-        where("time", "==", reservation.time)
-      );
-
-      const remindersSnapshot = await getDocs(remindersQuery);
-
-      if (!remindersSnapshot.empty) {
-        // Send email notifications to each user who set a reminder
-        for (const reminderDoc of remindersSnapshot.docs) {
-          const reminder = reminderDoc.data();
-          const notifyEmailParams = {
-            user_email: reminder.email,
-            room_name: reservation.roomName,
-            room_location: reservation.location,
-            booking_date: reservation.date,
-            booking_time: reservation.time,
-          };
-
-          // Send notification email to each user
-          await emailjs.send(
-            "service_p7qb2fi",
-            "template_fwti4vi",
-            notifyEmailParams,
-            "q6N2whZUsNxvfV7sr"
-          );
-
-          // After notification, delete this reminder from the notifications collection
-          const reminderRef = doc(db, "reminders", reminderDoc.id);
-          await deleteDoc(reminderRef); // Remove the reminder record
-        }
-      }
-
-      alert(`Reservation denied.`);
+      await deleteDoc(doc(db, "opportunities", id));
+      setOpportunities(opportunities.filter((o) => o.id !== id));
     } catch (error) {
-      console.error("Error denying reservation:", error);
-      alert("Failed to deny the reservation. Please try again later.");
+      console.error("Error removing opportunity:", error);
     }
   };
 
-  const generateReport = () => {
-    const doc = new jsPDF();
-
-    // Title
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.text("Organization Applications Report", 14, 15);
-
-    // Reservations Table
-    doc.setFontSize(14);
-    doc.text("Reservations", 14, 25);
-    autoTable(doc, {
-      startY: 30,
-      head: [["Patron Email", "Room", "Location", "Date", "Time", "Status"]],
-      body: reservations.map((res) => [
-        res.email,
-        res.room,
-        res.location,
-        res.date,
-        res.time,
-        res.status,
-      ]),
-    });
-
-    // Save PDF
-    doc.save("Organization_Applications_Report.pdf");
+  const handleUpdateApplicationStatus = async (appId, status) => {
+    try {
+      await updateDoc(doc(db, "applications", appId), { status });
+      fetchOpportunities();
+    } catch (error) {
+      console.error("Error updating application status:", error);
+    }
   };
 
   return (
     <>
       <OrganizationHeader />
-      <div className="applications-container">
-        <h2>Organization Applications</h2>
-        <div className="applications-content">
-          {/* Overview Panel */}
-          <div className="overview">
-            <h3>Overview</h3>
-            <p>
-              <strong>Total Reservations:</strong> {reservations.length}
+      <div className="organization-applications-container">
+        <h2>Manage Applications</h2>
+        {opportunities.length === 0 ? (
+          <>
+            <p className="no-opportunities">
+              You haven't shared any opportunities yet.
             </p>
-            <p>
-              <strong>Pending Requests:</strong>{" "}
-              {reservations.filter((r) => r.status === "Pending").length}
-            </p>
-          </div>
-
-          {/* Reservation Management */}
-          <div className="reservations">
-            <h3>Reservation Management</h3>
-            {reservations.map((res) => (
-              <div key={res.id} className="reservation-card">
-                <p>
-                  <b>Patron Email:</b> {res.email}
-                </p>
-                <p>
-                  <b>Room:</b> {res.room}
-                </p>
-                <p>
-                  <b>Location:</b> {res.location} {/* Display Location */}
-                </p>
-                <p>
-                  <b>Date:</b> {res.date} {/* Display Date */}
-                </p>
-                <p>
-                  <b>Time:</b> {res.time} {/* Display Time */}
-                </p>
-                <p>
-                  <b>Status:</b> {res.status}
-                </p>
-                {res.status === "Pending" && (
-                  <div>
-                    <button onClick={() => handleApprove(res)}>Approve</button>
-                    <button onClick={() => handleDeny(res)}>Deny</button>
-                  </div>
-                )}
+            <button
+              className="btn share-btn"
+              onClick={() => navigate("/organization-opportunities")}
+            >
+              Share Opportunities
+            </button>
+          </>
+        ) : (
+          opportunities.map((opp) => (
+            <div className="opportunity-card" key={opp.id}>
+              <div className="opportunity-header">
+                <h3>{opp.title}</h3>
+                <button
+                  className="remove-btn"
+                  onClick={() => handleRemoveOpportunity(opp.id)}
+                >
+                  Remove
+                </button>
               </div>
-            ))}
-          </div>
-
-          {/* Generate Report Button */}
-          <button className="generate-report-btn" onClick={generateReport}>
-            Generate Report
-          </button>
-        </div>
+              {applications[opp.id]?.length > 0 ? (
+                <ul className="applicant-list">
+                  {applications[opp.id].map((applicant) => (
+                    <li key={applicant.id}>
+                      <p>
+                        {applicant.volunteerEmail} - Status:{" "}
+                        {applicant.status || "Pending"}
+                      </p>
+                      <div className="action-buttons">
+                        <button
+                          onClick={() =>
+                            handleUpdateApplicationStatus(
+                              applicant.id,
+                              "accepted"
+                            )
+                          }
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleUpdateApplicationStatus(
+                              applicant.id,
+                              "denied"
+                            )
+                          }
+                        >
+                          Deny
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="no-applicants">
+                  No applicants for this opportunity yet.
+                </p>
+              )}
+            </div>
+          ))
+        )}
       </div>
     </>
   );

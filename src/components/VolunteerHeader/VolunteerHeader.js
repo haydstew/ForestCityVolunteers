@@ -25,10 +25,10 @@ const VolunteerHeader = () => {
         </div>
         <nav className="nav-links">
           <Link to="/volunteer-applications" className="nav-link">
-            My Applications
+            Your Applications
           </Link>
           <Link to="/volunteer-opportunities" className="nav-link">
-            Find Opportunities
+            Available Opportunities
           </Link>
           <button className="signout-btn" onClick={handleSignOut}>
             Sign Out

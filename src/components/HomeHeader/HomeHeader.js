@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./Header.scss";
+import "./HomeHeader.scss";
 import logo from "../../assets/fcv-icon-white.png";
 
-const Header = () => {
+const HomeHeader = () => {
   const navigate = useNavigate();
 
   return (
@@ -28,4 +28,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HomeHeader;

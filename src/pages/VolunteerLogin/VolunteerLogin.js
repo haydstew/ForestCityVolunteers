@@ -4,7 +4,7 @@ import { auth, db } from "../../Firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import "./VolunteerLogin.scss";
-import Header from "../../components/Header/Header.js";
+import HomeHeader from "../../components/HomeHeader/HomeHeader.js";
 
 const VolunteerLogin = () => {
   const [email, setEmail] = useState("");
@@ -39,13 +39,13 @@ const VolunteerLogin = () => {
 
   return (
     <div className="page-container">
-      <Header />
+      <HomeHeader />
       <main className="volunteer-login-container">
         <h2>Volunteer Login</h2>
 
         <p className="intro-text">
           Welcome back! Please log in to view your volunteer applications and
-          apply for opportunities.
+          apply for new opportunities.
         </p>
 
         <form className="login-form">

@@ -4,7 +4,7 @@ import { auth, db } from "../../Firebase.js";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import "./Register.scss";
-import Header from "../../components/Header/Header.js";
+import HomeHeader from "../../components/HomeHeader/HomeHeader.js";
 
 const Register = () => {
   const [userType, setUserType] = useState("volunteer");
@@ -57,7 +57,7 @@ const Register = () => {
 
   return (
     <div className="page-container">
-      <Header />
+      <HomeHeader />
       <main className="register-container">
         <h2>Create an Account</h2>
 

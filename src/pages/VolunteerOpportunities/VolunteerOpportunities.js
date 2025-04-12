@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../Firebase.js";
 import "./VolunteerOpportunities.scss";
 import VolunteerHeader from "../../components/VolunteerHeader/VolunteerHeader.js";
@@ -20,14 +28,12 @@ const VolunteerOpportunities = () => {
 
     const fetchOpportunities = async () => {
       try {
-        // Fetch all opportunities
         const oppSnapshot = await getDocs(collection(db, "opportunities"));
         const allOpportunities = oppSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
 
-        // Fetch applications by this volunteer
         const appQuery = query(
           collection(db, "applications"),
           where("volunteerEmail", "==", volunteerEmail)
@@ -37,7 +43,6 @@ const VolunteerOpportunities = () => {
           (doc) => doc.data().opportunityId
         );
 
-        // Filter opportunities that haven't been applied to
         const available = allOpportunities.filter(
           (opp) => !appliedIds.includes(opp.id)
         );
@@ -51,6 +56,47 @@ const VolunteerOpportunities = () => {
 
     fetchOpportunities();
   }, [navigate, volunteerEmail]);
+
+  const handleApply = async (opportunityId) => {
+    const confirmApply = window.confirm(
+      "Are you sure you want to apply for this opportunity?"
+    );
+    if (!confirmApply) return;
+
+    try {
+      // Get volunteer's full name
+      const volunteerQuery = query(
+        collection(db, "volunteers"),
+        where("email", "==", volunteerEmail)
+      );
+      const volunteerSnapshot = await getDocs(volunteerQuery);
+      if (volunteerSnapshot.empty) {
+        alert("Error: Volunteer not found.");
+        return;
+      }
+
+      const volunteerData = volunteerSnapshot.docs[0].data();
+      const fullName = volunteerData.fullName;
+
+      await addDoc(collection(db, "applications"), {
+        createdAt: new Date(),
+        volunteerName: fullName,
+        volunteerEmail: volunteerEmail,
+        opportunityId: opportunityId,
+        status: "Pending",
+      });
+
+      alert("Application submitted successfully!");
+
+      // Remove applied opportunity from list
+      setOpportunities((prev) =>
+        prev.filter((opp) => opp.id !== opportunityId)
+      );
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      alert("There was an error submitting your application.");
+    }
+  };
 
   return (
     <>
@@ -68,16 +114,14 @@ const VolunteerOpportunities = () => {
                   <strong>Organization:</strong> {opp.organizationName}
                 </p>
                 <p>
-                  <strong>Date:</strong> {opp.date}
+                  <strong>Description:</strong> {opp.description}
                 </p>
-                <p>{opp.description}</p>
+                <p>
+                  <strong>Date:</strong> {opp.startDate}
+                </p>
                 <button
                   className="btn apply-btn"
-                  onClick={() =>
-                    navigate(`/apply/${opp.id}`, {
-                      state: { opportunity: opp },
-                    })
-                  }
+                  onClick={() => handleApply(opp.id)}
                 >
                   Apply
                 </button>

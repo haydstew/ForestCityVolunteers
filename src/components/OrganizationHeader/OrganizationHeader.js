@@ -25,10 +25,10 @@ const OrganizationHeader = () => {
         </div>
         <nav className="nav-links">
           <Link to="/organization-applications" className="nav-link">
-            Review Applications
+            Manage Applications
           </Link>
           <Link to="/organization-opportunities" className="nav-link">
-            Manage Opportunities
+            Share Opportunities
           </Link>
           <button className="signout-btn" onClick={handleSignOut}>
             Sign Out

@@ -52,7 +52,7 @@ const VolunteerApplications = () => {
               <li key={app.id} className="application-card">
                 <h3>{app.opportunityTitle}</h3>
                 <p>
-                  <strong>Status:</strong> {app.status || "Pending"}
+                  <strong>Status:</strong> {app.status}
                 </p>
                 <p>
                   <strong>Submitted:</strong> {app.submittedAt}

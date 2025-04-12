@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import "./Home.scss";
-import Header from "../../components/Header/Header.js";
+import HomeHeader from "../../components/HomeHeader/HomeHeader.js";
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
     <div className="page-container">
-      <Header />
+      <HomeHeader />
       <main className="home-container">
         <h2>Welcome to Forest City Volunteers</h2>
 
