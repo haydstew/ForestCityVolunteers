@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth, db } from "../../Firebase.js";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../Firebase.js";
+import { doc, setDoc } from "firebase/firestore";
 import "./Register.scss";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
 
 const Register = () => {
-  const [userType, setUserType] = useState("volunteer"); // volunteer selected by default
+  const [userType, setUserType] = useState("volunteer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(""); // For volunteer
-  const [organizationName, setOrganizationName] = useState(""); // For organization
+  const [name, setName] = useState("");
+  const [organizationName, setOrganizationName] = useState("");
 
   const navigate = useNavigate();
 
@@ -19,15 +20,35 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      console.log("Registration successful!");
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
 
       if (userType === "volunteer") {
-        localStorage.setItem("volunteer", email);
-        navigate("/volunteer-dashboard");
+        await setDoc(doc(db, "volunteers", user.uid), {
+          fullName: name,
+          email: email,
+          createdAt: new Date(),
+        });
+
+        alert(
+          "Registration successful! You can now login using your email and password."
+        );
+        navigate("/volunteer-login");
       } else {
-        localStorage.setItem("organization", email);
-        navigate("/organization-dashboard");
+        await setDoc(doc(db, "organizations", user.uid), {
+          organizationName: organizationName,
+          email: email,
+          createdAt: new Date(),
+        });
+
+        alert(
+          "Registration successful! You can now login using your email and password."
+        );
+        navigate("/organization-login");
       }
     } catch (error) {
       console.error("Error registering:", error.message);

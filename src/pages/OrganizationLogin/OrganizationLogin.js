@@ -14,6 +14,7 @@ const OrganizationLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -22,25 +23,20 @@ const OrganizationLogin = () => {
       );
       const user = userCredential.user;
 
-      // Fetch user role from Firestore
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const organizationRef = doc(db, "organizations", user.uid);
+      const organizationSnap = await getDoc(organizationRef);
 
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        console.log("User data from Firestore:", userData);
-
-        if (userData.role === "organization") {
-          localStorage.setItem("organization", email);
-          navigate("/organization-dashboard");
-        } else {
-          alert("Access denied. Only organizations can log in here.");
-        }
+      if (organizationSnap.exists()) {
+        localStorage.setItem("organization", email);
+        navigate("/organization-dashboard");
       } else {
-        alert("User not found in Firestore.");
+        alert(
+          "Access denied: This account is not registered as an organization."
+        );
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      alert("Invalid credentials or user not found.");
+      console.error("Error signing in:", error.message);
+      alert("Invalid credentials. Please try again.");
     }
   };
 
@@ -63,8 +59,9 @@ const OrganizationLogin = () => {
             name="email"
             placeholder="Enter your email"
             className="form-input"
-            required
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
 
           <label htmlFor="password">Password</label>
@@ -74,8 +71,9 @@ const OrganizationLogin = () => {
             name="password"
             placeholder="Enter your password"
             className="form-input"
-            required
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
           <button type="submit" className="btn login-btn" onClick={handleLogin}>

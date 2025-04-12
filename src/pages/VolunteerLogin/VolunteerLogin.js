@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth, db } from "../../Firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../Firebase.js";
+import { doc, getDoc } from "firebase/firestore";
 import "./VolunteerLogin.scss";
 import Header from "../../components/Header/Header.js";
 import Footer from "../../components/Footer/Footer.js";
@@ -15,21 +16,22 @@ const VolunteerLogin = () => {
     e.preventDefault();
 
     try {
-      // Sign in user with email and password
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
+      const user = userCredential.user;
 
-      // Login successful
-      console.log("Login successful!", userCredential.user);
+      const volunteerRef = doc(db, "volunteers", user.uid);
+      const volunteerSnap = await getDoc(volunteerRef);
 
-      // Store session (if needed)
-      localStorage.setItem("volunteer", email);
-
-      // Redirect to user dashboard
-      navigate("/volunteer-dashboard");
+      if (volunteerSnap.exists()) {
+        localStorage.setItem("volunteer", email);
+        navigate("/volunteer-dashboard");
+      } else {
+        alert("Access denied: This account is not registered as a volunteer.");
+      }
     } catch (error) {
       console.error("Error signing in:", error.message);
       alert("Invalid credentials. Please try again.");
@@ -55,6 +57,8 @@ const VolunteerLogin = () => {
             name="email"
             placeholder="Enter your email"
             className="form-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 
@@ -65,6 +69,8 @@ const VolunteerLogin = () => {
             name="password"
             placeholder="Enter your password"
             className="form-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
 
