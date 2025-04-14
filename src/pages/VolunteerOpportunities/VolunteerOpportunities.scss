@@ -70,16 +70,17 @@ $green-500: #2e2c1f;
 
     .apply-btn {
       padding: 8px 16px;
-      border: none;
+      border: 2px solid $green-400;
       border-radius: 8px;
       font-weight: bold;
-      background-color: $green-400;
-      color: $green-100;
+      background-color: transparent;
+      color: $green-400;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
 
       &:hover {
-        background-color: darken($green-400, 10%);
+        background-color: $green-400;
+        color: $green-100;
       }
     }
   }
