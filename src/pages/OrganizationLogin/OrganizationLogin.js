@@ -26,7 +26,12 @@ const OrganizationLogin = () => {
       const organizationSnap = await getDoc(organizationRef);
 
       if (organizationSnap.exists()) {
-        localStorage.setItem("organization", email);
+        const organizationData = organizationSnap.data();
+        const organizationName = organizationData.organizationName;
+
+        localStorage.setItem("email", email);
+        localStorage.setItem("organizationName", organizationName);
+
         navigate("/organization-applications");
       } else {
         alert(

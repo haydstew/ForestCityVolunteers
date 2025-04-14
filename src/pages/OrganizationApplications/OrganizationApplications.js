@@ -18,7 +18,7 @@ const OrganizationApplications = () => {
   const [opportunities, setOpportunities] = useState([]);
   const [applications, setApplications] = useState({});
   const [loading, setLoading] = useState(true);
-  const organizationEmail = localStorage.getItem("organization");
+  const organizationEmail = localStorage.getItem("email");
 
   useEffect(() => {
     if (!organizationEmail) {

@@ -10,10 +10,10 @@ const OrganizationOpportunities = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [organizationName, setOrganizationName] = useState("");
+  const organizationName = localStorage.getItem("organizationName");
   const [startDate, setStartDate] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const organizationEmail = localStorage.getItem("organization");
+  const organizationEmail = localStorage.getItem("email");
 
   useEffect(() => {
     if (!organizationEmail) {
@@ -39,7 +39,6 @@ const OrganizationOpportunities = () => {
       setSuccessMessage("Opportunity shared successfully!");
       setTitle("");
       setDescription("");
-      setOrganizationName("");
       setLocation("");
       setStartDate("");
     } catch (error) {
@@ -86,7 +85,7 @@ const OrganizationOpportunities = () => {
             name="organization"
             placeholder="Enter your organization name"
             value={organizationName}
-            onChange={(e) => setOrganizationName(e.target.value)}
+            readOnly
             required
           />
 
