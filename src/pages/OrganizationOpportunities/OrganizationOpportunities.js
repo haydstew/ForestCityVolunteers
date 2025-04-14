@@ -51,11 +51,10 @@ const OrganizationOpportunities = () => {
     <>
       <OrganizationHeader />
       <div className="organization-opportunities-container">
-        <h2>Share Volunteer Opportunities</h2>
+        <h2>Share Opportunities</h2>
         <p className="intro-text">
-          Use the form below to share volunteer opportunities. These
-          opportunities will be visible to volunteers who are looking to get
-          involved.
+          Use the form below to share volunteer opportunities and make them
+          visible to volunteers who want to get involved.
         </p>
         <form className="opportunity-form" onSubmit={handleSubmit}>
           <label htmlFor="title">Title</label>

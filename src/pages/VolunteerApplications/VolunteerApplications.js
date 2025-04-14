@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../Firebase.js";
 import "./VolunteerApplications.scss";
 import VolunteerHeader from "../../components/VolunteerHeader/VolunteerHeader.js";
@@ -39,37 +46,90 @@ const VolunteerApplications = () => {
     fetchApplications();
   }, [navigate, volunteerEmail]);
 
+  const groupedApplications = applications.reduce((acc, app) => {
+    const org = app.organizationName;
+    if (!acc[org]) acc[org] = [];
+    acc[org].push(app);
+    return acc;
+  }, {});
+
+  const handleCancelApplication = async (appId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to cancel this application?"
+    );
+    if (!confirmed) return;
+
+    try {
+      await deleteDoc(doc(db, "applications", appId));
+      setApplications(applications.filter((app) => app.id !== appId));
+    } catch (error) {
+      console.error("Error cancelling application:", error);
+    }
+  };
+
   return (
     <>
       <VolunteerHeader />
       <div className="volunteer-applications-container">
         <h2>Your Applications</h2>
+        {applications.length > 0 && (
+          <p className="intro-text">
+            View the opportunities you've applied for and track their status.
+            You can also cancel applications if needed.
+          </p>
+        )}
         {loading ? (
-          <p>Loading your applications...</p>
-        ) : applications.length > 0 ? (
-          <ul className="applications-list">
-            {applications.map((app) => (
-              <li key={app.id} className="application-card">
-                <h3>{app.opportunityTitle}</h3>
-                <p>
-                  <strong>Status:</strong> {app.status}
-                </p>
-                <p>
-                  <strong>Submitted:</strong> {app.submittedAt}
-                </p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="no-applications">
-            <p>You haven't applied for any opportunities yet.</p>
+          <p>Loading applications...</p>
+        ) : applications.length === 0 ? (
+          <>
+            <p className="no-applications">
+              You haven't applied for any opportunities yet.
+            </p>
             <button
               className="btn browse-btn"
               onClick={() => navigate("/volunteer-opportunities")}
             >
               Browse Opportunities
             </button>
-          </div>
+          </>
+        ) : (
+          Object.entries(groupedApplications).map(([orgName, apps]) => (
+            <div key={orgName} className="organization-section">
+              <h3 className="organization-heading">{orgName}</h3>
+              {apps.map((app) => (
+                <div className="application-card" key={app.id}>
+                  <div className="application-header">
+                    <div className="title-status">
+                      <h4>{app.title}</h4>
+                      <span
+                        className={`status-badge ${app.status.toLowerCase()}`}
+                      >
+                        {app.status}
+                      </span>
+                    </div>
+                    <button
+                      className="cancel-btn"
+                      onClick={() => handleCancelApplication(app.id)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+
+                  <div className="opportunity-details">
+                    <p>
+                      <strong>Description:</strong> {app.description}
+                    </p>
+                    <p>
+                      <strong>Location:</strong> {app.location}
+                    </p>
+                    <p>
+                      <strong>Start Date:</strong> {app.startDate}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))
         )}
       </div>
     </>

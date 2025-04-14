@@ -5,19 +5,19 @@ $green-400: #0d3d03;
 $green-500: #2e2c1f;
 
 .organization-opportunities-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
 
   h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     text-align: center;
     color: $green-400;
     margin-bottom: 1rem;
   }
 
   .intro-text {
-    margin: 0 auto 1rem auto;
+    margin-bottom: 2rem;
     font-size: 1.1rem;
     line-height: 1.6;
     color: $green-500;
@@ -80,7 +80,7 @@ $green-500: #2e2c1f;
     }
 
     .success-message {
-      color: $green-300;
+      color: $green-400;
       font-weight: bold;
       text-align: center;
       margin-top: 1rem;

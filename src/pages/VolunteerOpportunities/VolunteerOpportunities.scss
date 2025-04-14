@@ -5,60 +5,78 @@ $green-400: #0d3d03;
 $green-500: #2e2c1f;
 
 .volunteer-opportunities-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
   text-align: center;
-  padding: 1rem;
-  margin: 2rem auto;
 
   h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: $green-400;
     margin-bottom: 1rem;
   }
 
-  p {
-    font-size: 1.1rem;
+  .intro-text {
+    text-align: center;
+    margin-bottom: 2rem;
     color: $green-500;
+    font-size: 1.1rem;
+    line-height: 1.6;
   }
 
-  .opportunity-list {
-    list-style: none;
-    padding: 0;
-    margin: 2rem auto;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  .no-opportunities {
+    text-align: center;
+    color: $green-500;
+    font-size: 1.1rem;
+  }
+
+  .organization-section {
+    text-align: left;
+    margin-bottom: 2rem;
+
+    .organization-heading {
+      font-size: 1.5rem;
+      color: $green-400;
+      margin-bottom: 1rem;
+    }
   }
 
   .opportunity-card {
-    background-color: white;
-    border: 1px solid $green-200;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 1.5rem;
-    text-align: left;
-    color: $green-500;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
-    h3 {
-      font-size: 1.6rem;
-      color: $green-300;
-      margin: 0.5rem 0;
+    .opportunity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      h4 {
+        font-size: 1.25rem;
+        color: $green-400;
+        margin: 0;
+      }
     }
 
-    p {
-      margin: 0.3rem 0;
+    .opportunity-details {
+      p {
+        margin: 0.3rem 0;
+      }
     }
 
     .apply-btn {
-      margin-top: 1rem;
-      padding: 10px 20px;
+      padding: 8px 16px;
       border: none;
       border-radius: 8px;
       font-weight: bold;
-      font-size: 1rem;
       background-color: $green-400;
       color: $green-100;
       cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
 
       &:hover {
         background-color: darken($green-400, 10%);

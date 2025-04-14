@@ -17,6 +17,7 @@ const OrganizationApplications = () => {
   const navigate = useNavigate();
   const [opportunities, setOpportunities] = useState([]);
   const [applications, setApplications] = useState({});
+  const [loading, setLoading] = useState(true);
   const organizationEmail = localStorage.getItem("organization");
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const OrganizationApplications = () => {
     } else {
       fetchOpportunities();
     }
+    // eslint-disable-next-line
   }, [navigate, organizationEmail]);
 
   const fetchOpportunities = async () => {
@@ -57,20 +59,40 @@ const OrganizationApplications = () => {
       setApplications(appsByOpp);
     } catch (error) {
       console.error("Error fetching opportunities or applications:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRemoveOpportunity = async (id) => {
     const confirmed = window.confirm(
-      "Are you sure you want to remove this opportunity?"
+      "Are you sure you want to remove this opportunity and all associated applications?"
     );
     if (!confirmed) return;
 
     try {
+      const appsQ = query(
+        collection(db, "applications"),
+        where("opportunityId", "==", id)
+      );
+      const appsSnap = await getDocs(appsQ);
+
+      const deletePromises = appsSnap.docs.map((docSnap) =>
+        deleteDoc(doc(db, "applications", docSnap.id))
+      );
+      await Promise.all(deletePromises);
+
       await deleteDoc(doc(db, "opportunities", id));
+
       setOpportunities(opportunities.filter((o) => o.id !== id));
+      const updatedApplications = { ...applications };
+      delete updatedApplications[id];
+      setApplications(updatedApplications);
     } catch (error) {
-      console.error("Error removing opportunity:", error);
+      console.error(
+        "Error removing opportunity and related applications:",
+        error
+      );
     }
   };
 
@@ -88,70 +110,101 @@ const OrganizationApplications = () => {
       <OrganizationHeader />
       <div className="organization-applications-container">
         <h2>Manage Applications</h2>
-        {opportunities.length === 0 ? (
-          <>
-            <p className="no-opportunities">
-              You haven't shared any opportunities yet.
-            </p>
-            <button
-              className="btn share-btn"
-              onClick={() => navigate("/organization-opportunities")}
-            >
-              Share Opportunities
-            </button>
-          </>
+        {loading ? (
+          <p className="loading-text">
+            Loading opportunities and applications...
+          </p>
         ) : (
-          opportunities.map((opp) => (
-            <div className="opportunity-card" key={opp.id}>
-              <div className="opportunity-header">
-                <h3>{opp.title}</h3>
-                <button
-                  className="remove-btn"
-                  onClick={() => handleRemoveOpportunity(opp.id)}
-                >
-                  Remove
-                </button>
-              </div>
-              {applications[opp.id]?.length > 0 ? (
-                <ul className="applicant-list">
-                  {applications[opp.id].map((applicant) => (
-                    <li key={applicant.id}>
-                      <p>
-                        {applicant.volunteerEmail} - Status:{" "}
-                        {applicant.status || "Pending"}
-                      </p>
-                      <div className="action-buttons">
-                        <button
-                          onClick={() =>
-                            handleUpdateApplicationStatus(
-                              applicant.id,
-                              "accepted"
-                            )
-                          }
-                        >
-                          Accept
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleUpdateApplicationStatus(
-                              applicant.id,
-                              "denied"
-                            )
-                          }
-                        >
-                          Deny
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="no-applicants">
-                  No applicants for this opportunity yet.
+          <>
+            {opportunities.length > 0 && (
+              <p className="intro-text">
+                View volunteer applications for your posted opportunities.
+                Accept or decline applicants and manage your listings.
+              </p>
+            )}
+            {opportunities.length === 0 ? (
+              <>
+                <p className="no-opportunities">
+                  You haven't shared any opportunities yet.
                 </p>
-              )}
-            </div>
-          ))
+                <button
+                  className="btn share-btn"
+                  onClick={() => navigate("/organization-opportunities")}
+                >
+                  Share Opportunities
+                </button>
+              </>
+            ) : (
+              opportunities.map((opp) => (
+                <div key={opp.id} className="opportunity-card">
+                  <div className="opportunity-header">
+                    <h3>{opp.title}</h3>
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemoveOpportunity(opp.id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+
+                  <div className="opportunity-details">
+                    <p>
+                      <strong>Description:</strong> {opp.description}
+                    </p>
+                    <p>
+                      <strong>Location:</strong> {opp.location}
+                    </p>
+                    <p>
+                      <strong>Start Date:</strong> {opp.startDate}
+                    </p>
+                  </div>
+
+                  {applications[opp.id]?.length > 0 ? (
+                    <ul className="applicant-list">
+                      {applications[opp.id].map((applicant) => (
+                        <li key={applicant.id}>
+                          <div className="applicant-info">
+                            <p>
+                              <strong>{applicant.volunteerName}</strong> (
+                              {applicant.volunteerEmail})
+                              <span
+                                className={`status-badge ${applicant.status?.toLowerCase()}`}
+                              >
+                                {applicant.status}
+                              </span>
+                            </p>
+                          </div>
+                          <div className="status-dropdown">
+                            <label htmlFor={`status-${applicant.id}`}>
+                              Change Status:{" "}
+                            </label>
+                            <select
+                              id={`status-${applicant.id}`}
+                              value={applicant.status || "Pending"}
+                              onChange={(e) =>
+                                handleUpdateApplicationStatus(
+                                  applicant.id,
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <option value="Pending">Pending</option>
+                              <option value="Accepted">Accepted</option>
+                              <option value="Declined">Declined</option>
+                            </select>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="no-applicants">
+                      No applicants for this opportunity yet.
+                    </p>
+                  )}
+                </div>
+              ))
+            )}
+          </>
         )}
       </div>
     </>

@@ -3,64 +3,132 @@ $green-200: #a3ab82;
 $green-300: #5c6d49;
 $green-400: #0d3d03;
 $green-500: #2e2c1f;
+$red: #d9534f;
 
 .volunteer-applications-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
   text-align: center;
-  padding: 1rem;
-  margin: 2rem auto;
 
   h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: $green-400;
     margin-bottom: 1rem;
   }
 
-  .applications-list {
-    list-style: none;
-    padding: 0;
-    margin: 2rem auto;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .application-card {
-    background-color: $green-100;
-    border: 1px solid $green-200;
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: left;
+  .intro-text {
+    margin-bottom: 2rem;
     color: $green-500;
-
-    h3 {
-      color: $green-300;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      margin: 0.25rem 0;
-    }
+    font-size: 1.1rem;
+    line-height: 1.6;
   }
 
   .no-applications {
     font-size: 1.1rem;
+    margin: 2rem 0;
     color: $green-500;
+  }
 
-    .browse-btn {
-      margin-top: 1rem;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1rem;
-      background-color: $green-400;
-      color: $green-100;
-      cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
+  .browse-btn {
+    margin-top: 1rem;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    background-color: $green-400;
+    color: $green-100;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 
-      &:hover {
-        background-color: darken($green-400, 10%);
+    &:hover {
+      background-color: darken($green-400, 10%);
+    }
+  }
+
+  .organization-section {
+    text-align: left;
+    margin-bottom: 2.5rem;
+
+    .organization-heading {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: $green-400;
+    }
+  }
+
+  .application-card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+    .application-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .title-status {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        h4 {
+          margin: 0;
+          font-size: 1.25rem;
+          color: $green-400;
+        }
+
+        .status-badge {
+          display: inline-block;
+          padding: 0.25rem 0.75rem;
+          border-radius: 12px;
+          font-size: 0.875rem;
+          font-weight: bold;
+          text-transform: capitalize;
+
+          &.pending {
+            background-color: #f0c148;
+            color: #000;
+          }
+
+          &.accepted {
+            background-color: $green-300;
+            color: #fff;
+          }
+
+          &.declined {
+            background-color: $red;
+            color: #fff;
+          }
+        }
+      }
+
+      .cancel-btn {
+        background-color: transparent;
+        color: $red;
+        padding: 8px 16px;
+        border: 2px solid $red;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+          background-color: $red;
+          color: $green-100;
+        }
+      }
+    }
+
+    .opportunity-details {
+      p {
+        margin: 0.3rem 0;
+        color: $green-500;
       }
     }
   }
