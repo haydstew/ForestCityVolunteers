@@ -11,7 +11,8 @@ const OrganizationHeader = () => {
     );
 
     if (signOutConfirmation) {
-      localStorage.removeItem("organization");
+      localStorage.removeItem("email");
+      localStorage.removeItem("organizationName");
       navigate("/");
     }
   };
