@@ -167,18 +167,14 @@ const OrganizationApplications = () => {
                             <p>
                               <strong>{applicant.volunteerName}</strong> (
                               {applicant.volunteerEmail})
-                              <span
-                                className={`status-badge ${applicant.status?.toLowerCase()}`}
-                              >
-                                {applicant.status}
-                              </span>
                             </p>
                           </div>
                           <div className="status-dropdown">
                             <label htmlFor={`status-${applicant.id}`}>
-                              Change Status:{" "}
+                              Status:{" "}
                             </label>
                             <select
+                              className={`status-select ${applicant.status?.toLowerCase()}`}
                               id={`status-${applicant.id}`}
                               value={applicant.status || "Pending"}
                               onChange={(e) =>

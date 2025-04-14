@@ -154,13 +154,30 @@ $red: #d9534f;
             color: $green-500;
           }
 
-          select {
-            padding: 4px 8px;
-            border-radius: 8px;
-            border: 1px solid $green-300;
-            background-color: #ffffff;
+          .status-select {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: bold;
+            text-transform: capitalize;
+            border: none;
+            outline: none;
             font-family: "Lato", sans-serif;
-            color: $green-500;
+
+            &.pending {
+              background-color: #f0c148;
+              color: #000;
+            }
+
+            &.accepted {
+              background-color: $green-300;
+              color: #f9f9f9;
+            }
+
+            &.declined {
+              background-color: $red;
+              color: #f9f9f9;
+            }
           }
         }
       }
